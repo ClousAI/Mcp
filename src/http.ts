@@ -11,7 +11,7 @@
 import express from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { makeCall } from "./clous.js";
+import { makeCall, makeCallBody } from "./clous.js";
 import { registerTools } from "./tools.js";
 
 const API_BASE = process.env.CLOUS_API_BASE ?? "https://api.clous.ai";
@@ -42,7 +42,7 @@ async function handleMcp(req: express.Request, res: express.Response) {
     return;
   }
   const server = new McpServer({ name: "clous", version: "0.1.0" });
-  registerTools(server, makeCall(key, API_BASE));
+  registerTools(server, makeCall(key, API_BASE), makeCallBody(key, API_BASE));
   const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
   res.on("close", () => {
     transport.close();

@@ -14,7 +14,7 @@
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { makeCall } from "./clous.js";
+import { makeCall, makeCallBody } from "./clous.js";
 import { registerTools } from "./tools.js";
 
 const API_BASE = process.env.CLOUS_API_BASE ?? "https://api.clous.ai";
@@ -29,7 +29,7 @@ if (!API_KEY) {
 }
 
 const server = new McpServer({ name: "clous", version: "0.1.0" });
-registerTools(server, makeCall(API_KEY, API_BASE));
+registerTools(server, makeCall(API_KEY, API_BASE), makeCallBody(API_KEY, API_BASE));
 
 async function main() {
   await server.connect(new StdioServerTransport());
