@@ -4,7 +4,8 @@
   "description": "Model Context Protocol server for the Clous API — entity-resolved SEC/EDGAR filings data for AI agents.",
   "type": "module",
   "bin": {
-    "clous-mcp": "dist/index.js"
+    "clous-mcp": "dist/index.js",
+    "clous-mcp-http": "dist/http.js"
   },
   "files": [
     "dist"
@@ -12,7 +13,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
+    "start:http": "node dist/http.js",
     "dev": "tsx src/index.ts",
+    "dev:http": "tsx src/http.ts",
     "prepare": "tsc"
   },
   "keywords": [
@@ -35,9 +38,11 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
+    "express": "^4.21.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^22.10.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
