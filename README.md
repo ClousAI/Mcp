@@ -1,22 +1,56 @@
-# Clous MCP server
+<div align="center">
 
-[![MIT](https://img.shields.io/badge/license-MIT-black)](./LICENSE)
+# Clous MCP
 
-A [Model Context Protocol](https://modelcontextprotocol.io) server for the
-**[Clous](https://clous.ai) API** — entity-resolved SEC/EDGAR filings data for AI
-agents. Point Claude Desktop, Cursor, or any MCP client at Clous and search
-filings, pull financials, insider trades, 13F holdings, Form D raises, and more
-through one consistent JSON envelope.
+**Public data intelligence for AI agents — over the Model Context Protocol.**
 
-> This is a thin, open-source client. It forwards tool calls to
-> `https://api.clous.ai` using **your** API key (via the `CLOUS_API_KEY`
-> environment variable). No key or secret is bundled here. All data derives from
-> public SEC EDGAR filings; Clous is independent of the SEC.
+Point Claude, Cursor, or any MCP client at Clous and search SEC/EDGAR filings, pull XBRL financials, insider trades, 13F holdings, Form D raises, and material events — all through one consistent, cited JSON envelope.
 
-## Get a key
+[![npm](https://img.shields.io/npm/v/@clousai/mcp?color=cb3837&label=%40clousai%2Fmcp)](https://www.npmjs.com/package/@clousai/mcp)
+[![Docs](https://img.shields.io/badge/docs-clous.ai-blue)](https://docs.clous.ai)
+[![Built for AI agents](https://img.shields.io/badge/built%20for-AI%20agents-6e56cf)](https://clous.ai)
+[![License: MIT](https://img.shields.io/badge/license-MIT-black)](./LICENSE)
 
-Sign up at **[clous.ai](https://clous.ai)** — 100 free credits, no card. Your key
-looks like `clous_live_...`.
+[clous.ai](https://clous.ai) · [docs.clous.ai](https://docs.clous.ai) · [hosted MCP](https://mcp.clous.ai) · [49 tools](#tools)
+
+</div>
+
+---
+
+> A thin, open-source MCP client. It forwards tool calls to `https://api.clous.ai` using **your** API key (the `CLOUS_API_KEY` env var). No key or secret is bundled. All data derives from public SEC EDGAR filings; Clous is independent of the SEC. **SEC/EDGAR is live today; Clous is expanding across public data.**
+
+## 30-second quickstart
+
+Get a free key at **[clous.ai](https://clous.ai)** (100 credits, no card — looks like `clous_live_...`), then add Clous to your MCP client:
+
+**Claude Desktop** — `claude_desktop_config.json` (Settings → Developer → Edit Config) · **Cursor** — `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "clous": {
+      "command": "npx",
+      "args": ["-y", "@clousai/mcp"],
+      "env": { "CLOUS_API_KEY": "clous_live_..." }
+    }
+  }
+}
+```
+
+Restart the client and ask: *"What material 8-Ks did NVIDIA file this week?"* — Clous answers with each accession and EDGAR URL cited.
+
+### Or use the hosted server (zero install)
+
+Clous runs a hosted MCP endpoint at **`https://mcp.clous.ai`** — no local Node, no `npx`. See [docs.clous.ai](https://docs.clous.ai) for the remote config.
+
+## Key features
+
+- **49 tools** spanning filings, full-text, financials, ownership, governance, enforcement, events, and monitors.
+- **Entity-resolved** — every record ties to a canonical company (CIK / ticker / name).
+- **One JSON envelope** — `{ data[], page, as_of, source, query_echo, warnings }` with cursor pagination.
+- **Token-efficient** — `fields=` / `output_schema=` projection trims payloads before they hit your context window.
+- **Cited by construction** — every result carries its source filing and EDGAR URL.
+- **Bring your own key** — open-source, no secrets bundled; works locally via `npx` or hosted.
 
 ## Tools
 
@@ -39,66 +73,33 @@ looks like `clous_live_...`.
 | `cyber_incidents` | 8-K Item 1.05 cybersecurity disclosures |
 | `get_account` | Plan + remaining credits |
 
-Full API reference: **[docs.clous.ai](https://docs.clous.ai)** ·
-machine-readable: [`llms.txt`](https://docs.clous.ai/llms.txt).
+…and 33 more (13F managers, N-PORT fund holdings, enforcement, litigation, patents, monitors/webhooks, grounded Q&A). Full reference: **[docs.clous.ai](https://docs.clous.ai)** · machine-readable [`llms.txt`](https://docs.clous.ai/llms.txt).
 
-## Use it
-
-### Claude Desktop
-
-Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
-
-```json
-{
-  "mcpServers": {
-    "clous": {
-      "command": "npx",
-      "args": ["-y", "@clousai/mcp"],
-      "env": { "CLOUS_API_KEY": "clous_live_..." }
-    }
-  }
-}
-```
-
-### Cursor
-
-`Settings → MCP → Add new server`, or add to `.cursor/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "clous": {
-      "command": "npx",
-      "args": ["-y", "@clousai/mcp"],
-      "env": { "CLOUS_API_KEY": "clous_live_..." }
-    }
-  }
-}
-```
-
-### From source
+## From source
 
 ```bash
-git clone https://github.com/clousai/mcp.git clous-mcp
+git clone https://github.com/ClousAI/Mcp.git clous-mcp
 cd clous-mcp
 npm install
 npm run build
 CLOUS_API_KEY=clous_live_... node dist/index.js   # speaks MCP over stdio
 ```
 
-Then point your client's `command` at `node` with args `["/abs/path/clous-mcp/dist/index.js"]`.
+Then point your client's `command` at `node` with args `["/abs/path/clous-mcp/dist/index.js"]`. For development, `CLOUS_API_KEY=clous_live_... npm run dev` runs via `tsx` with no build step.
 
-## Hosted MCP (no install)
+## Part of the Clous platform
 
-Prefer zero setup? Clous also runs a **hosted** MCP endpoint at
-`https://mcp.clous.ai` — see [docs.clous.ai](https://docs.clous.ai) for the remote
-config.
+Clous is **public data intelligence for AI agents** — entity-resolved signals from public records and the web, monitored in real time, delivered with citations. SEC/EDGAR is live today; expanding across public data.
 
-## Develop
-
-```bash
-npm install
-CLOUS_API_KEY=clous_live_... npm run dev   # tsx, no build step
-```
+| | |
+| --- | --- |
+| **Website** | [clous.ai](https://clous.ai) |
+| **Docs** | [docs.clous.ai](https://docs.clous.ai) · [`llms.txt`](https://docs.clous.ai/llms.txt) |
+| **MCP server** | [`Mcp`](https://github.com/ClousAI/Mcp) ← you are here · hosted at [mcp.clous.ai](https://mcp.clous.ai) |
+| **Claude Code plugin** | [`claude-code-plugin`](https://github.com/ClousAI/claude-code-plugin) |
+| **Agent Skill** | [`skill`](https://github.com/ClousAI/skill) |
+| **SDKs** | [`clous-python`](https://github.com/ClousAI/clous-python) · [`clous-js`](https://github.com/ClousAI/clous-js) |
+| **Recipes** | [`cookbook`](https://github.com/ClousAI/cookbook) |
+| **Framework tools** | [`integrations`](https://github.com/ClousAI/integrations) (LangChain · LlamaIndex · OpenAI · Vercel AI · CrewAI) |
 
 PRs welcome. License: [MIT](./LICENSE).
