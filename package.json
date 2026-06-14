@@ -1,5 +1,5 @@
 {
-  "name": "@clous/mcp",
+  "name": "@clousai/mcp",
   "version": "0.1.0",
   "description": "Model Context Protocol server for the Clous API — entity-resolved SEC/EDGAR filings data for AI agents.",
   "type": "module",

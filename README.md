@@ -53,7 +53,7 @@ Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
   "mcpServers": {
     "clous": {
       "command": "npx",
-      "args": ["-y", "@clous/mcp"],
+      "args": ["-y", "@clousai/mcp"],
       "env": { "CLOUS_API_KEY": "clous_live_..." }
     }
   }
@@ -69,7 +69,7 @@ Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
   "mcpServers": {
     "clous": {
       "command": "npx",
-      "args": ["-y", "@clous/mcp"],
+      "args": ["-y", "@clousai/mcp"],
       "env": { "CLOUS_API_KEY": "clous_live_..." }
     }
   }
